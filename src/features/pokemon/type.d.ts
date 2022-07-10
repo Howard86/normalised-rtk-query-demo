@@ -15,74 +15,70 @@ declare namespace Pokemon {
   type NormalisedMove = Normalised<Move>;
 
   type Normalised<T extends Index> =
-    | { type: 'list'; data: ResourceItem & Index }
+    | { type: 'list'; data: NamedAPIResource & Index }
     | { type: 'item'; data: T };
 
   type Index = { id: number };
 
   interface Pokemon {
-    abilities: Ability[];
+    abilities: PokemonAbility[];
     base_experience: number;
-    forms: ResourceItem[];
-    game_indices: Index[];
+    forms: NamedAPIResource[];
+    game_indices: VersionGameIndex[];
     height: number;
-    held_items: HeldItem[];
+    held_items: PokemonHeldItem[];
     id: number;
     is_default: boolean;
     location_area_encounters: string;
-    moves: Move[];
+    moves: PokemonMove[];
     name: string;
     order: number;
     past_types: unknown[];
-    species: ResourceItem;
-    sprites: Sprites;
-    stats: Stat[];
-    types: Type[];
+    species: NamedAPIResource;
+    sprites: PokemonSprites;
+    stats: PokemonStat[];
+    types: PokemonType[];
     weight: number;
   }
 
-  interface Ability {
-    ability: ResourceItem;
-    is_hidden: boolean;
-    slot: number;
-  }
-
-  interface NormalisedResourceItem {
-    name: string;
-  }
-
-  interface ResourceItem {
+  interface NamedAPIResource {
     name: string;
     url: string;
   }
 
-  interface Index {
+  interface PokemonAbility {
+    ability: NamedAPIResource;
+    is_hidden: boolean;
+    slot: number;
+  }
+
+  interface VersionGameIndex {
     game_index: number;
-    version: ResourceItem;
+    version: NamedAPIResource;
   }
 
-  interface HeldItem {
-    item: ResourceItem;
-    version_details: VersionDetail[];
+  interface PokemonHeldItem {
+    item: NamedAPIResource;
+    version_details: HeldItemVersionDetail[];
   }
 
-  interface VersionDetail {
+  interface HeldItemVersionDetail {
     rarity: number;
-    version: ResourceItem;
-  }
-
-  interface Move {
-    move: ResourceItem;
-    version_group_details: VersionGroupDetail[];
+    version: NamedAPIResource;
   }
 
   interface VersionGroupDetail {
     level_learned_at: number;
-    move_learn_method: ResourceItem;
-    version_group: ResourceItem;
+    move_learn_method: NamedAPIResource;
+    version_group: NamedAPIResource;
   }
 
-  interface Sprites {
+  interface PokemonMove {
+    move: NamedAPIResource;
+    version_group_details: VersionGroupDetail[];
+  }
+
+  interface PokemonSprites {
     back_default: string;
     back_female: string | null;
     back_shiny: string;
@@ -312,125 +308,108 @@ declare namespace Pokemon {
   }
 
   interface GenerationViii {
-    icons: Icons2;
+    icons: Icons;
   }
 
-  interface Icons2 {
-    front_default: string;
-    front_female: unknown;
-  }
-
-  interface Stat {
+  interface PokemonStat {
     base_stat: number;
     effort: number;
-    stat: ResourceItem;
+    stat: NamedAPIResource;
   }
 
-  interface Type {
+  interface PokemonType {
     slot: number;
-    type: ResourceItem;
+    type: NamedAPIResource;
   }
 
   interface Move {
-    accuracy: number | null;
-    contest_combos: ContestCombos;
-    contest_effect: ContestEffect;
-    contest_type: ResourceItem;
-    damage_class: ResourceItem;
-    effect_chance: unknown;
-    effect_changes: unknown[];
-    effect_entries: EffectEntry[];
-    flavor_text_entries: FlavorTextEntry[];
-    generation: ResourceItem;
     id: number;
-    learned_by_pokemon: ResourceItem[];
-    machines: Machine[];
-    meta: Meta;
+    accuracy: number | null;
+    contest_combos: ContestComboSets;
+    contest_effect: APIResource;
+    contest_type: NamedAPIResource;
+    damage_class: NamedAPIResource;
+    effect_chance: number | null;
+    effect_changes: unknown[];
+    effect_entries: VerboseEffect[];
+    flavor_text_entries: MoveFlavorText[];
+    generation: NamedAPIResource;
+    learned_by_pokemon: NamedAPIResource[];
+    machines: MachineVersionDetail[];
+    meta: MoveMetaData;
     name: string;
     names: Name[];
-    past_values: PastValue[];
+    past_values: PastMoveStatValue[];
     power: number | null;
     pp: number;
     priority: number;
-    stat_changes: StatChange[];
-    super_contest_effect: UrlItem;
-    target: ResourceItem;
-    type: ResourceItem;
+    stat_changes: MoveStatChange[];
+    super_contest_effect: APIResource;
+    target: NamedAPIResource;
+    type: NamedAPIResource;
   }
 
-  interface ContestCombos {
-    normal: Normal;
-    super: Super;
-  }
-
-  interface Normal {
-    use_after: unknown;
-    use_before: ResourceItem[];
-  }
-
-  interface Super {
-    use_after: unknown;
-    use_before: unknown;
-  }
-
-  interface ContestEffect {
+  interface APIResource {
     url: string;
   }
 
-  interface EffectEntry {
+  type ContestComboSets = Record<'normal', 'super', ContestComboDetail>;
+
+  interface ContestComboDetail {
+    use_before: NamedAPIResource;
+    use_after: NamedAPIResource;
+  }
+
+  interface VerboseEffect {
     effect: string;
-    language: ResourceItem;
+    language: NamedAPIResource;
     short_effect: string;
   }
 
-  interface FlavorTextEntry {
+  interface MoveFlavorText {
     flavor_text: string;
-    language: ResourceItem;
-    version_group: ResourceItem;
+    language: NamedAPIResource;
+    version_group: NamedAPIResource;
   }
 
-  interface Machine {
-    machine: UrlItem;
-    version_group: ResourceItem;
+  interface MachineVersionDetail {
+    machine: APIResource;
+    version_group: NamedAPIResource;
   }
 
-  interface UrlItem {
-    url: string;
-  }
-
-  interface Meta {
-    ailment: ResourceItem;
+  interface MoveMetaData {
+    ailment: NamedAPIResource;
     ailment_chance: number;
-    category: ResourceItem;
+    category: NamedAPIResource;
     crit_rate: number;
     drain: number;
     flinch_chance: number;
     healing: number;
-    max_hits: unknown;
-    max_turns: unknown;
-    min_hits: unknown;
-    min_turns: unknown;
+    max_hits: number;
+    max_turns: number;
+    min_hits: number;
+    min_turns: number;
     stat_chance: number;
   }
 
   interface Name {
-    language: ResourceItem;
+    language: NamedAPIResource;
     name: string;
     url: string;
   }
 
-  interface PastValue {
-    accuracy: unknown;
-    effect_chance: unknown;
-    effect_entries: unknown[];
-    power: unknown;
+  interface PastMoveStatValue {
+    accuracy: number;
+    effect_chance: number;
+    effect_entries: VerboseEffect[];
+    power: number;
     pp: number;
-    type: unknown;
-    version_group: ResourceItem;
+    type: NamedAPIResource;
+    version_group: NamedAPIResource;
   }
 
-  interface StatChange {
+  interface MoveStatChange {
     change: number;
-    stat: ResourceItem;
+    stat: NamedAPIResource;
   }
 }
