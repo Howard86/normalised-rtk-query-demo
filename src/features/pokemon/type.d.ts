@@ -325,4 +325,107 @@ declare namespace Pokemon {
     slot: number;
     type: ResourceItem;
   }
+
+  interface Move {
+    accuracy: number | null;
+    contest_combos: ContestCombos;
+    contest_effect: ContestEffect;
+    contest_type: ResourceItem;
+    damage_class: ResourceItem;
+    effect_chance: unknown;
+    effect_changes: unknown[];
+    effect_entries: EffectEntry[];
+    flavor_text_entries: FlavorTextEntry[];
+    generation: ResourceItem;
+    id: number;
+    learned_by_pokemon: ResourceItem[];
+    machines: Machine[];
+    meta: Meta;
+    name: string;
+    names: Name[];
+    past_values: PastValue[];
+    power: number | null;
+    pp: number;
+    priority: number;
+    stat_changes: StatChange[];
+    super_contest_effect: UrlItem;
+    target: ResourceItem;
+    type: ResourceItem;
+  }
+
+  interface ContestCombos {
+    normal: Normal;
+    super: Super;
+  }
+
+  interface Normal {
+    use_after: unknown;
+    use_before: ResourceItem[];
+  }
+
+  interface Super {
+    use_after: unknown;
+    use_before: unknown;
+  }
+
+  interface ContestEffect {
+    url: string;
+  }
+
+  interface EffectEntry {
+    effect: string;
+    language: ResourceItem;
+    short_effect: string;
+  }
+
+  interface FlavorTextEntry {
+    flavor_text: string;
+    language: ResourceItem;
+    version_group: ResourceItem;
+  }
+
+  interface Machine {
+    machine: UrlItem;
+    version_group: ResourceItem;
+  }
+
+  interface UrlItem {
+    url: string;
+  }
+
+  interface Meta {
+    ailment: ResourceItem;
+    ailment_chance: number;
+    category: ResourceItem;
+    crit_rate: number;
+    drain: number;
+    flinch_chance: number;
+    healing: number;
+    max_hits: unknown;
+    max_turns: unknown;
+    min_hits: unknown;
+    min_turns: unknown;
+    stat_chance: number;
+  }
+
+  interface Name {
+    language: ResourceItem;
+    name: string;
+    url: string;
+  }
+
+  interface PastValue {
+    accuracy: unknown;
+    effect_chance: unknown;
+    effect_entries: unknown[];
+    power: unknown;
+    pp: number;
+    type: unknown;
+    version_group: ResourceItem;
+  }
+
+  interface StatChange {
+    change: number;
+    stat: ResourceItem;
+  }
 }

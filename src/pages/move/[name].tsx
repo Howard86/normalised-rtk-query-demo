@@ -13,31 +13,25 @@ import {
 } from '@chakra-ui/react';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
 import Head from 'next/head';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import RouteLink from '@/common/components/RouteLink';
-import useAppSelector from '@/common/hooks/useAppSelector';
-import { useGetPokemonByNameQuery } from '@/features/pokemon/api';
-import { pokemonSelector } from '@/features/pokemon/schema';
+import { useGetPokemonMoveByNameQuery } from '@/features/pokemon/api';
 
-const PokemonPage = () => {
+const MovePage = () => {
   const router = useRouter();
-  const pokemonName =
+  const moveName =
     typeof router.query.name === 'string' ? router.query.name : '';
 
-  const pokemon = useAppSelector((state) =>
-    pokemonSelector.selectById(state, pokemonName),
-  );
-  useGetPokemonByNameQuery(pokemonName || skipToken);
+  const move = useGetPokemonMoveByNameQuery(moveName || skipToken);
 
-  if (!router.isReady || !pokemon || pokemon.type !== 'item') return null;
+  if (!router.isReady || !move.data) return null;
 
   return (
     <>
       <Head>
-        <title>{pokemon.data.name}</title>
+        <title>{move.data.name}</title>
       </Head>
       <Container>
         <Breadcrumb fontWeight="medium">
@@ -47,23 +41,22 @@ const PokemonPage = () => {
             </Link>
           </BreadcrumbItem>
           <BreadcrumbItem>
-            <Link href={`/pokemon/${pokemon.data.name}`} passHref>
-              <BreadcrumbLink>{pokemon.data.name}</BreadcrumbLink>
+            <Link href={`/move/${move.data.name}`} passHref>
+              <BreadcrumbLink>{move.data.name}</BreadcrumbLink>
             </Link>
           </BreadcrumbItem>
         </Breadcrumb>
         <Flex as="section">
-          <Image
-            src={pokemon.data.sprites.front_default}
-            width={100}
-            height={100}
-          />
           <Box>
-            <Heading mb="2">{pokemon.data.name}</Heading>
+            <Heading mb="2">{move.data.name}</Heading>
             <HStack>
-              {pokemon.data.types.map((type) => (
-                <Tag key={type.slot}>{type.type.name}</Tag>
-              ))}
+              <Tag>{move.data.type.name}</Tag>
+              <Tag variant="solid">{move.data.damage_class.name}</Tag>
+              <Tag variant="outline">Power: {move.data.power}</Tag>
+              <Tag variant="outline">PP: {move.data.pp}</Tag>
+              <Tag variant="outline">
+                {`Accuracy: ${move.data.accuracy ?? '-'}`}
+              </Tag>
             </HStack>
           </Box>
         </Flex>
@@ -72,10 +65,10 @@ const PokemonPage = () => {
             Moves
           </Heading>
           <List>
-            {pokemon.data.moves.map((move) => (
-              <ListItem key={move.move.name}>
-                <RouteLink href={`/move/${move.move.name}`}>
-                  {move.move.name}
+            {move.data.learned_by_pokemon.map((pokemon) => (
+              <ListItem key={pokemon.name}>
+                <RouteLink href={`/pokemon/${pokemon.name}`}>
+                  {pokemon.name}
                 </RouteLink>
               </ListItem>
             ))}
@@ -86,4 +79,4 @@ const PokemonPage = () => {
   );
 };
 
-export default PokemonPage;
+export default MovePage;
