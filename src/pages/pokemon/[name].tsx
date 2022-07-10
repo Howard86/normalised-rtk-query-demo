@@ -47,6 +47,11 @@ const PokemonPage = () => {
             </Link>
           </BreadcrumbItem>
           <BreadcrumbItem>
+            <Link href="/pokemon" passHref>
+              <BreadcrumbLink>Pokemon</BreadcrumbLink>
+            </Link>
+          </BreadcrumbItem>
+          <BreadcrumbItem>
             <Link href={`/pokemon/${pokemon.data.name}`} passHref>
               <BreadcrumbLink>{pokemon.data.name}</BreadcrumbLink>
             </Link>

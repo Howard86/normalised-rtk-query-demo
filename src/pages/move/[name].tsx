@@ -46,6 +46,11 @@ const MovePage = () => {
             </Link>
           </BreadcrumbItem>
           <BreadcrumbItem>
+            <Link href="/move" passHref>
+              <BreadcrumbLink>Pokemon Move</BreadcrumbLink>
+            </Link>
+          </BreadcrumbItem>
+          <BreadcrumbItem>
             <Link href={`/move/${move.data.name}`} passHref>
               <BreadcrumbLink>{move.data.name}</BreadcrumbLink>
             </Link>
