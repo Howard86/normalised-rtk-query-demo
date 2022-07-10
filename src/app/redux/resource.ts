@@ -48,6 +48,17 @@ export const resourceSlice = createSlice({
         },
       )
       .addMatcher(
+        pokemonApi.endpoints.getListOfMove.matchFulfilled,
+        (state, action) => {
+          state.move = moveAdapter.addMany(
+            state.move,
+            action.payload.results.map(
+              mapResourceToNormalisedList<Pokemon.Move>,
+            ),
+          );
+        },
+      )
+      .addMatcher(
         pokemonApi.endpoints.getPokemonMoveByName.matchFulfilled,
         (state, action) => {
           state.move = moveAdapter.upsertOne(state.move, {

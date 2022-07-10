@@ -18,6 +18,15 @@ export const pokemonApi = createApi({
     getPokemonByName: builder.query<Pokemon.Pokemon, string>({
       query: (name) => `pokemon/${name}`,
     }),
+    getListOfMove: builder.query<
+      Pokemon.PaginationResponse<Pokemon.NamedAPIResource>,
+      Partial<Pokemon.PaginationParam>
+    >({
+      query: (params) => ({
+        url: 'move',
+        params,
+      }),
+    }),
     getPokemonMoveByName: builder.query<Pokemon.Move, string>({
       query: (name) => `move/${name}`,
     }),
@@ -27,5 +36,6 @@ export const pokemonApi = createApi({
 export const {
   useGetListOfPokemonQuery,
   useGetPokemonByNameQuery,
+  useGetListOfMoveQuery,
   useGetPokemonMoveByNameQuery,
 } = pokemonApi;
