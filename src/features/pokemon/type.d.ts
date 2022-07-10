@@ -11,21 +11,25 @@ declare namespace Pokemon {
     offset: number;
   };
 
+  type NormalisedPokemon =
+    | { type: 'list'; data: ResourceItem }
+    | { type: 'item'; data: Pokemon };
+
   interface Pokemon {
     abilities: Ability[];
     base_experience: number;
-    forms: Form[];
+    forms: ResourceItem[];
     game_indices: Index[];
     height: number;
     held_items: HeldItem[];
     id: number;
     is_default: boolean;
     location_area_encounters: string;
-    moves: Mfe[];
+    moves: Move[];
     name: string;
     order: number;
     past_types: unknown[];
-    species: Species;
+    species: ResourceItem;
     sprites: Sprites;
     stats: Stat[];
     types: Type[];
@@ -33,91 +37,55 @@ declare namespace Pokemon {
   }
 
   interface Ability {
-    ability: Ability2;
+    ability: ResourceItem;
     is_hidden: boolean;
     slot: number;
   }
 
-  interface Ability2 {
+  interface NormalisedResourceItem {
     name: string;
-    url: string;
   }
 
-  interface Form {
+  interface ResourceItem {
     name: string;
     url: string;
   }
 
   interface Index {
     game_index: number;
-    version: Version;
-  }
-
-  interface Version {
-    name: string;
-    url: string;
+    version: ResourceItem;
   }
 
   interface HeldItem {
-    item: Item;
+    item: ResourceItem;
     version_details: VersionDetail[];
-  }
-
-  interface Item {
-    name: string;
-    url: string;
   }
 
   interface VersionDetail {
     rarity: number;
-    version: Version2;
-  }
-
-  interface Version2 {
-    name: string;
-    url: string;
-  }
-
-  interface Mfe {
-    move: Move;
-    version_group_details: VersionGroupDetail[];
+    version: ResourceItem;
   }
 
   interface Move {
-    name: string;
-    url: string;
+    move: ResourceItem;
+    version_group_details: VersionGroupDetail[];
   }
 
   interface VersionGroupDetail {
     level_learned_at: number;
-    move_learn_method: MoveLearnMethod;
-    version_group: VersionGroup;
-  }
-
-  interface MoveLearnMethod {
-    name: string;
-    url: string;
-  }
-
-  interface VersionGroup {
-    name: string;
-    url: string;
-  }
-
-  interface Species {
-    name: string;
-    url: string;
+    move_learn_method: ResourceItem;
+    version_group: ResourceItem;
   }
 
   interface Sprites {
     back_default: string;
-    back_female: unknown;
+    back_female: string | null;
     back_shiny: string;
-    back_shiny_female: unknown;
+    back_shiny_female: string | null;
     front_default: string;
-    front_female: unknown;
+    front_female: string | null;
     front_shiny: string;
-    front_shiny_female: unknown;
+    front_shiny_female: string | null;
     other: Other;
     versions: Versions;
   }
@@ -350,21 +318,11 @@ declare namespace Pokemon {
   interface Stat {
     base_stat: number;
     effort: number;
-    stat: Stat2;
-  }
-
-  interface Stat2 {
-    name: string;
-    url: string;
+    stat: ResourceItem;
   }
 
   interface Type {
     slot: number;
-    type: Type2;
-  }
-
-  interface Type2 {
-    name: string;
-    url: string;
+    type: ResourceItem;
   }
 }

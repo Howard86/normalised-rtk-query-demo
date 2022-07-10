@@ -6,14 +6,19 @@ import {
   List,
   ListItem,
 } from '@chakra-ui/react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 import RouteLink from '@/common/components/RouteLink';
+import useAppSelector from '@/common/hooks/useAppSelector';
 import { useGetListOfPokemonQuery } from '@/features/pokemon/api';
+import { pokemonSelector } from '@/features/pokemon/schema';
 
 const Home = (): JSX.Element => {
+  const pokemonList = useAppSelector(pokemonSelector.selectAll);
+
   // TODO: add pagination state
-  const pokemonList = useGetListOfPokemonQuery({ offset: 0, limit: 20 });
+  useGetListOfPokemonQuery({ offset: 0, limit: 20 });
 
   return (
     <Container>
@@ -25,11 +30,24 @@ const Home = (): JSX.Element => {
         </BreadcrumbItem>
       </Breadcrumb>
       <List>
-        {pokemonList.data?.results.map((pokemon) => (
-          <ListItem key={pokemon.name}>
-            <RouteLink href={`/pokemon/${pokemon.name}`}>
-              {pokemon.name}
-            </RouteLink>
+        {pokemonList.map((pokemon) => (
+          <ListItem key={pokemon.data.name}>
+            {pokemon.type === 'list' ? (
+              <RouteLink href={`/pokemon/${pokemon.data.name}`}>
+                {pokemon.data.name}
+              </RouteLink>
+            ) : (
+              <>
+                <Image
+                  src={pokemon.data.sprites.front_default}
+                  width={100}
+                  height={100}
+                />
+                <RouteLink href={`/pokemon/${pokemon.data.name}`}>
+                  {pokemon.data.name}
+                </RouteLink>
+              </>
+            )}
           </ListItem>
         ))}
       </List>

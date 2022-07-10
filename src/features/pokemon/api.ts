@@ -7,7 +7,7 @@ export const pokemonApi = createApi({
   }),
   endpoints: (builder) => ({
     getListOfPokemon: builder.query<
-      Pokemon.PaginationResponse<Record<'url' | 'name', string>>,
+      Pokemon.PaginationResponse<Pokemon.ResourceItem>,
       Partial<Pokemon.PaginationParam>
     >({
       query: (params) => ({

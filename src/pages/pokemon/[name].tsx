@@ -16,15 +16,21 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
+import useAppSelector from '@/common/hooks/useAppSelector';
 import { useGetPokemonByNameQuery } from '@/features/pokemon/api';
+import { pokemonSelector } from '@/features/pokemon/schema';
 
 const PokemonPage = () => {
   const router = useRouter();
-  const pokemon = useGetPokemonByNameQuery(
-    typeof router.query.name === 'string' ? router.query.name : skipToken,
-  );
+  const pokemonName =
+    typeof router.query.name === 'string' ? router.query.name : '';
 
-  if (!router.isReady || !pokemon.data) return null;
+  const pokemon = useAppSelector((state) =>
+    pokemonSelector.selectById(state, pokemonName),
+  );
+  useGetPokemonByNameQuery(pokemonName || skipToken);
+
+  if (!router.isReady || !pokemon || pokemon.type !== 'item') return null;
 
   return (
     <>
