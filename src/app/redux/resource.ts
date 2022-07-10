@@ -1,14 +1,17 @@
 import { createSlice, EntityState } from '@reduxjs/toolkit';
 
 import { pokemonApi } from '@/features/pokemon/api';
-import { pokemonAdapter } from '@/features/pokemon/schema';
+import { moveAdapter, pokemonAdapter } from '@/features/pokemon/schema';
+import { mapResourceToNormalisedList } from '@/features/pokemon/util';
 
 interface ResourceState {
   pokemon: EntityState<Pokemon.NormalisedPokemon>;
+  move: EntityState<Pokemon.NormalisedMove>;
 }
 
 const initialState: ResourceState = {
   pokemon: pokemonAdapter.getInitialState(),
+  move: moveAdapter.getInitialState(),
 };
 
 // eslint-disable-next-line import/prefer-default-export
@@ -21,12 +24,11 @@ export const resourceSlice = createSlice({
       .addMatcher(
         pokemonApi.endpoints.getListOfPokemon.matchFulfilled,
         (state, action) => {
-          state.pokemon = pokemonAdapter.upsertMany(
+          state.pokemon = pokemonAdapter.addMany(
             state.pokemon,
-            action.payload.results.map((data) => ({
-              type: 'list',
-              data,
-            })),
+            action.payload.results.map(
+              mapResourceToNormalisedList<Pokemon.Pokemon>,
+            ),
           );
         },
       )
@@ -37,6 +39,27 @@ export const resourceSlice = createSlice({
             type: 'item',
             data: action.payload,
           });
+          state.move = moveAdapter.addMany(
+            state.move,
+            action.payload.moves.map((move) =>
+              mapResourceToNormalisedList(move.move),
+            ),
+          );
+        },
+      )
+      .addMatcher(
+        pokemonApi.endpoints.getPokemonMoveByName.matchFulfilled,
+        (state, action) => {
+          state.move = moveAdapter.upsertOne(state.move, {
+            type: 'item',
+            data: action.payload,
+          });
+          state.pokemon = pokemonAdapter.addMany(
+            state.pokemon,
+            action.payload.learned_by_pokemon.map(
+              mapResourceToNormalisedList<Pokemon.Pokemon>,
+            ),
+          );
         },
       ),
 });

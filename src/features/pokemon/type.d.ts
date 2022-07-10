@@ -11,9 +11,14 @@ declare namespace Pokemon {
     offset: number;
   };
 
-  type NormalisedPokemon =
-    | { type: 'list'; data: ResourceItem }
-    | { type: 'item'; data: Pokemon };
+  type NormalisedPokemon = Normalised<Pokemon>;
+  type NormalisedMove = Normalised<Move>;
+
+  type Normalised<T extends Index> =
+    | { type: 'list'; data: ResourceItem & Index }
+    | { type: 'item'; data: T };
+
+  type Index = { id: number };
 
   interface Pokemon {
     abilities: Ability[];

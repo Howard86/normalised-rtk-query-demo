@@ -17,16 +17,21 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import RouteLink from '@/common/components/RouteLink';
+import useAppSelector from '@/common/hooks/useAppSelector';
 import { useGetPokemonMoveByNameQuery } from '@/features/pokemon/api';
+import { moveSelector } from '@/features/pokemon/schema';
 
 const MovePage = () => {
   const router = useRouter();
   const moveName =
     typeof router.query.name === 'string' ? router.query.name : '';
+  const move = useAppSelector((state) =>
+    moveSelector.selectById(state, moveName),
+  );
 
-  const move = useGetPokemonMoveByNameQuery(moveName || skipToken);
+  useGetPokemonMoveByNameQuery(moveName || skipToken);
 
-  if (!router.isReady || !move.data) return null;
+  if (!router.isReady || move?.type !== 'item') return null;
 
   return (
     <>
@@ -62,7 +67,7 @@ const MovePage = () => {
         </Flex>
         <Box as="section">
           <Heading as="h2" size="sm">
-            Moves
+            Pokemons
           </Heading>
           <List>
             {move.data.learned_by_pokemon.map((pokemon) => (
