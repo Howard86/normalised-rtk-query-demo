@@ -7,6 +7,9 @@ const config = {
   eslint: {
     dirs: ['src', '__tests__'],
   },
+  images: {
+    domains: ['raw.githubusercontent.com'],
+  },
 };
 
 module.exports = (phase) => {
