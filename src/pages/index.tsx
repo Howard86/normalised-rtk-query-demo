@@ -1,42 +1,20 @@
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  Container,
-  Heading,
-  List,
-  ListItem,
-  Text,
-} from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import Head from 'next/head';
-import Link from 'next/link';
 
-import RouteLink from '@/common/components/RouteLink';
+import Footer from '@/common/components/Footer';
+import Header from '@/common/components/Header';
+import Hero from '@/common/components/Hero';
 
 const Home = () => (
   <>
     <Head>
       <title>Pokedex</title>
     </Head>
-    <Container>
-      <Breadcrumb fontWeight="medium">
-        <BreadcrumbItem>
-          <Link href="/" passHref>
-            <BreadcrumbLink>Home</BreadcrumbLink>
-          </Link>
-        </BreadcrumbItem>
-      </Breadcrumb>
-      <Heading>Pokedex</Heading>
-      <Text>Select the following</Text>
-      <List>
-        <ListItem>
-          <RouteLink href="/pokemon">Pokemon</RouteLink>
-        </ListItem>
-        <ListItem>
-          <RouteLink href="/move">Pokemon Move</RouteLink>
-        </ListItem>
-      </List>
-    </Container>
+    <Flex flexDir="column" minH="full">
+      <Header />
+      <Hero as="main" flex={1} />
+      <Footer />
+    </Flex>
   </>
 );
 

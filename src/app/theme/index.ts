@@ -10,7 +10,7 @@ const theme = extendTheme(
       useSystemColorMode: false,
     },
   },
-  withDefaultColorScheme({ colorScheme: 'purple' }),
+  withDefaultColorScheme({ colorScheme: 'blue' }),
 );
 
 export default theme;
