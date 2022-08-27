@@ -1,9 +1,5 @@
 import {
   Box,
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  Container,
   Flex,
   Heading,
   HStack,
@@ -14,9 +10,9 @@ import {
 import { skipToken } from '@reduxjs/toolkit/dist/query';
 import Head from 'next/head';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 
+import { getLayout } from '@/common/components/Layout';
 import RouteLink from '@/common/components/RouteLink';
 import useAppSelector from '@/common/hooks/useAppSelector';
 import { useGetPokemonByNameQuery } from '@/features/pokemon/api';
@@ -39,56 +35,39 @@ const PokemonPage = () => {
       <Head>
         <title>{pokemon.data.name}</title>
       </Head>
-      <Container>
-        <Breadcrumb fontWeight="medium">
-          <BreadcrumbItem>
-            <Link href="/" passHref>
-              <BreadcrumbLink>Home</BreadcrumbLink>
-            </Link>
-          </BreadcrumbItem>
-          <BreadcrumbItem>
-            <Link href="/pokemon" passHref>
-              <BreadcrumbLink>Pokemon</BreadcrumbLink>
-            </Link>
-          </BreadcrumbItem>
-          <BreadcrumbItem>
-            <Link href={`/pokemon/${pokemon.data.name}`} passHref>
-              <BreadcrumbLink>{pokemon.data.name}</BreadcrumbLink>
-            </Link>
-          </BreadcrumbItem>
-        </Breadcrumb>
-        <Flex as="section">
-          <Image
-            src={pokemon.data.sprites.front_default}
-            width={100}
-            height={100}
-          />
-          <Box>
-            <Heading mb="2">{pokemon.data.name}</Heading>
-            <HStack>
-              {pokemon.data.types.map((type) => (
-                <Tag key={type.slot}>{type.type.name}</Tag>
-              ))}
-            </HStack>
-          </Box>
-        </Flex>
-        <Box as="section">
-          <Heading as="h2" size="sm">
-            Moves
-          </Heading>
-          <List>
-            {pokemon.data.moves.map((move) => (
-              <ListItem key={move.move.name}>
-                <RouteLink href={`/move/${move.move.name}`}>
-                  {move.move.name}
-                </RouteLink>
-              </ListItem>
+      <Flex as="section">
+        <Image
+          src={pokemon.data.sprites.front_default}
+          width={100}
+          height={100}
+        />
+        <Box>
+          <Heading mb="2">{pokemon.data.name}</Heading>
+          <HStack>
+            {pokemon.data.types.map((type) => (
+              <Tag key={type.slot}>{type.type.name}</Tag>
             ))}
-          </List>
+          </HStack>
         </Box>
-      </Container>
+      </Flex>
+      <Box as="section">
+        <Heading as="h2" size="sm">
+          Moves
+        </Heading>
+        <List>
+          {pokemon.data.moves.map((move) => (
+            <ListItem key={move.move.name}>
+              <RouteLink href={`/move/${move.move.name}`}>
+                {move.move.name}
+              </RouteLink>
+            </ListItem>
+          ))}
+        </List>
+      </Box>
     </>
   );
 };
+
+PokemonPage.getLayout = getLayout;
 
 export default PokemonPage;

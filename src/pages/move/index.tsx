@@ -1,13 +1,6 @@
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  Container,
-  List,
-  ListItem,
-} from '@chakra-ui/react';
-import Link from 'next/link';
+import { List, ListItem } from '@chakra-ui/react';
 
+import { getLayout } from '@/common/components/Layout';
 import RouteLink from '@/common/components/RouteLink';
 import useAppSelector from '@/common/hooks/useAppSelector';
 import { useGetListOfMoveQuery } from '@/features/pokemon/api';
@@ -20,30 +13,18 @@ const MoveListPage = (): JSX.Element => {
   useGetListOfMoveQuery({ offset: 0, limit: 20 });
 
   return (
-    <Container>
-      <Breadcrumb fontWeight="medium">
-        <BreadcrumbItem>
-          <Link href="/" passHref>
-            <BreadcrumbLink>Home</BreadcrumbLink>
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem>
-          <Link href="/move" passHref>
-            <BreadcrumbLink>Pokemon Move</BreadcrumbLink>
-          </Link>
-        </BreadcrumbItem>
-      </Breadcrumb>
-      <List>
-        {moveList.map((move) => (
-          <ListItem key={move.data.name}>
-            <RouteLink href={`/move/${move.data.name}`}>
-              {move.data.name} {move.type === 'item' && move.data.pp}
-            </RouteLink>
-          </ListItem>
-        ))}
-      </List>
-    </Container>
+    <List>
+      {moveList.map((move) => (
+        <ListItem key={move.data.name}>
+          <RouteLink href={`/move/${move.data.name}`}>
+            {move.data.name} {move.type === 'item' && move.data.pp}
+          </RouteLink>
+        </ListItem>
+      ))}
+    </List>
   );
 };
+
+MoveListPage.getLayout = getLayout;
 
 export default MoveListPage;
