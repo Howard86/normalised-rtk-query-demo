@@ -8,19 +8,34 @@ import {
   HStack,
   LinkBox,
   LinkOverlay,
+  Skeleton,
   Tag,
 } from '@chakra-ui/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { CgPokemon } from 'react-icons/cg';
 
-import { useLazyGetPokemonByNameQuery } from './api';
+import {
+  useGetPokemonSpeciesByNameQuery,
+  useLazyGetPokemonByNameQuery,
+} from './api';
 import usePokemon from './usePokemon';
 import { getColorByType } from './util';
+
+const LANGUAGE_NAME = 'en';
 
 const PokemonCard = ({ name }: Pokemon.NameIndex) => {
   const [fetchPokemonByName, { isLoading }] = useLazyGetPokemonByNameQuery();
   const pokemon = usePokemon(name, true);
+  const species = useGetPokemonSpeciesByNameQuery(name, {
+    skip: pokemon.data?.type !== 'item',
+    selectFromResult: (res) => ({
+      ...res,
+      description: res.data?.flavor_text_entries.find(
+        (entry) => entry.language.name === LANGUAGE_NAME,
+      )?.flavor_text,
+    }),
+  });
 
   if (!pokemon.data) return null;
 
@@ -37,7 +52,6 @@ const PokemonCard = ({ name }: Pokemon.NameIndex) => {
       textTransform="capitalize"
       minH={120}
       gap={4}
-      flex={0}
     >
       <Tag
         pos="absolute"
@@ -77,7 +91,7 @@ const PokemonCard = ({ name }: Pokemon.NameIndex) => {
         )}
       </Box>
 
-      <Flex flexDir="column" alignItems="start" flex={1}>
+      <Flex flexDir="column" alignItems="start" flex={1} gap={2}>
         <chakra.h2 fontSize="lg" fontWeight="bold" color="gray.800" flex={0}>
           <Link href={`/pokemon/${pokemon.data.data.name}`} passHref>
             <LinkOverlay noOfLines={1}>{pokemon.data.data.name}</LinkOverlay>
@@ -112,9 +126,14 @@ const PokemonCard = ({ name }: Pokemon.NameIndex) => {
                 </Tag>
               ))}
             </HStack>
-            <chakra.h1 fontWeight="bold" fontSize="sm" mt="auto">
+            <Skeleton isLoaded={Boolean(species.data)}>
+              <chakra.p lineHeight="4" fontSize="sm" mt="auto">
+                {species.description}
+              </chakra.p>
+            </Skeleton>
+            <chakra.p fontWeight="bold" fontSize="sm">
               {pokemon.data.data.moves.length} moves
-            </chakra.h1>
+            </chakra.p>
           </>
         )}
       </Flex>

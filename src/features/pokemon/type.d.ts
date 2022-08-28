@@ -42,8 +42,11 @@ declare namespace Pokemon {
     weight: number;
   }
 
-  interface NamedAPIResource {
+  interface NamedAPIResource extends APIResource {
     name: string;
+  }
+
+  interface APIResource {
     url: string;
   }
 
@@ -350,10 +353,6 @@ declare namespace Pokemon {
     type: NamedAPIResource;
   }
 
-  interface APIResource {
-    url: string;
-  }
-
   type ContestComboSets = Record<'normal', 'super', ContestComboDetail>;
 
   interface ContestComboDetail {
@@ -412,5 +411,61 @@ declare namespace Pokemon {
   interface MoveStatChange {
     change: number;
     stat: NamedAPIResource;
+  }
+
+  interface Species {
+    base_happiness: number;
+    capture_rate: number;
+    color: NamedAPIResource;
+    egg_groups: NamedAPIResource[];
+    evolution_chain: APIResource;
+    evolves_from_species: unknown;
+    flavor_text_entries: FlavorTextEntry[];
+    form_descriptions: unknown[];
+    forms_switchable: boolean;
+    gender_rate: number;
+    genera: Genera[];
+    generation: NamedAPIResource;
+    growth_rate: NamedAPIResource;
+    habitat: NamedAPIResource;
+    has_gender_differences: boolean;
+    hatch_counter: number;
+    id: number;
+    is_baby: boolean;
+    is_legendary: boolean;
+    is_mythical: boolean;
+    name: string;
+    names: Name[];
+    order: number;
+    pal_park_encounters: PalParkEncounter[];
+    pokedex_numbers: PokedexNumber[];
+    shape: NamedAPIResource;
+    varieties: Variety[];
+  }
+
+  interface FlavorTextEntry {
+    flavor_text: string;
+    language: NamedAPIResource;
+    version: NamedAPIResource;
+  }
+
+  interface Genera {
+    genus: string;
+    language: NamedAPIResource;
+  }
+
+  interface PalParkEncounter {
+    area: NamedAPIResource;
+    base_score: number;
+    rate: number;
+  }
+
+  interface PokedexNumber {
+    entry_number: number;
+    pokedex: NamedAPIResource;
+  }
+  interface Variety {
+    is_default: boolean;
+    pokemon: NamedAPIResource;
   }
 }
