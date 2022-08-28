@@ -38,10 +38,12 @@ export const pokemonApi = createApi({
 
 export const {
   useGetListOfPokemonQuery,
+  useLazyGetListOfPokemonQuery,
   useGetPokemonByNameQuery,
   useGetPokemonSpeciesByNameQuery,
   useLazyGetPokemonByNameQuery,
   useGetListOfMoveQuery,
+  useLazyGetListOfMoveQuery,
   useGetPokemonMoveByNameQuery,
   useLazyGetPokemonMoveByNameQuery,
 } = pokemonApi;

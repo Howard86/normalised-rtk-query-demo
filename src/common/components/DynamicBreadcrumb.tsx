@@ -6,15 +6,14 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { BiChevronRight } from 'react-icons/bi';
 
+import { capitalize, last } from '../utils';
+
 type LinkItem = { text: string; href: string };
 
 const HOME_ITEM: LinkItem = {
   text: 'Home',
   href: '/',
 };
-
-const capitalize = (text: string) => text[0].toUpperCase() + text.slice(1);
-const last = <T,>(array: T[]) => array[array.length - 1];
 
 const DynamicBreadcrumb = () => {
   const router = useRouter();

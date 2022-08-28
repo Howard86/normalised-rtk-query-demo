@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 import {
   Avatar,
   Box,
@@ -139,4 +141,4 @@ const PokemonCard = ({ name }: Pokemon.NameIndex) => {
   );
 };
 
-export default PokemonCard;
+export default memo(PokemonCard);

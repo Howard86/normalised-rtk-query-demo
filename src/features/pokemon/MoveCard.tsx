@@ -31,6 +31,16 @@ const MoveCard = ({ name }: Pokemon.NameIndex) => {
       rounded="lg"
       textTransform="capitalize"
     >
+      <Tag
+        pos="absolute"
+        colorScheme="cyan"
+        top="-2"
+        right="-2"
+        shadow="md"
+        bgGradient="linear(to-r, cyan.200, blue.400)"
+      >
+        #{move.data.data.id}
+      </Tag>
       {move.data.type === 'list' ? (
         <>
           <Flex gap={1}>

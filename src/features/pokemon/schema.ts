@@ -1,6 +1,12 @@
-import { createEntityAdapter } from '@reduxjs/toolkit';
+import {
+  createEntityAdapter,
+  createSelector,
+  Dictionary,
+  EntityId,
+} from '@reduxjs/toolkit';
 
 import type { RootState } from '@/app/redux/store';
+import { last } from '@/common/utils';
 
 export const pokemonAdapter = createEntityAdapter<Pokemon.TypedPokemon>({
   selectId: (item) => item.data.name,
@@ -18,4 +24,34 @@ export const moveAdapter = createEntityAdapter<Pokemon.TypedMove>({
 
 export const moveSelector = moveAdapter.getSelectors(
   (state: RootState) => state.resource.move,
+);
+
+const selectFilteredEntityIds = <
+  I extends Pokemon.Index,
+  T extends Pokemon.Typed<I>,
+>(
+  entities: Dictionary<T>,
+  ids: EntityId[],
+) => {
+  if (ids.length === entities[last(ids)]?.data.id) return ids;
+
+  const lastMatchedIndex = ids.findIndex(
+    (name, index) => entities[name]?.data.id !== index + 1,
+  );
+
+  if (!lastMatchedIndex) return ids;
+
+  return ids.slice(0, lastMatchedIndex);
+};
+
+export const selectLastPokemonIds = createSelector(
+  pokemonSelector.selectEntities,
+  pokemonSelector.selectIds,
+  selectFilteredEntityIds,
+);
+
+export const selectLastMoveIds = createSelector(
+  moveSelector.selectEntities,
+  moveSelector.selectIds,
+  selectFilteredEntityIds,
 );

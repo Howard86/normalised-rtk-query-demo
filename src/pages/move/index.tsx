@@ -1,19 +1,43 @@
+import { useEffect } from 'react';
+
+import { Button, Center, Heading } from '@chakra-ui/react';
+
 import { getLayout } from '@/common/components/Layout';
 import useAppSelector from '@/common/hooks/useAppSelector';
-import { useGetListOfMoveQuery } from '@/features/pokemon/api';
+import { useLazyGetListOfMoveQuery } from '@/features/pokemon/api';
 import MoveCardGrid from '@/features/pokemon/MoveCardGrid';
-import { moveSelector } from '@/features/pokemon/schema';
+import { selectLastMoveIds } from '@/features/pokemon/schema';
+
+const PAGE_SIZE = 6;
 
 const MoveListPage = (): JSX.Element => {
-  const moveIds = useAppSelector(moveSelector.selectIds) as string[];
+  const moveIds = useAppSelector(selectLastMoveIds) as string[];
+  const [fetchMore, { isFetching }] = useLazyGetListOfMoveQuery();
 
-  // TODO: add pagination state
-  useGetListOfMoveQuery(
-    { offset: 0, limit: 20 },
-    { skip: moveIds.length >= 20 },
+  const handleFetchMore = () => {
+    fetchMore({
+      limit: PAGE_SIZE,
+      offset: moveIds.length,
+    });
+  };
+
+  useEffect(() => {
+    if (moveIds.length === 0 && !isFetching) {
+      fetchMore({ limit: PAGE_SIZE, offset: 0 });
+    }
+  }, [fetchMore, isFetching, moveIds.length]);
+
+  return (
+    <>
+      <Heading>Showing {moveIds.length} Moves</Heading>
+      <MoveCardGrid ids={moveIds} />
+      <Center>
+        <Button onClick={handleFetchMore} isLoading={isFetching}>
+          Get More
+        </Button>
+      </Center>
+    </>
   );
-
-  return <MoveCardGrid ids={moveIds} />;
 };
 
 MoveListPage.getLayout = getLayout;
