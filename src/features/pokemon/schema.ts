@@ -2,7 +2,7 @@ import { createEntityAdapter } from '@reduxjs/toolkit';
 
 import type { RootState } from '@/app/redux/store';
 
-export const pokemonAdapter = createEntityAdapter<Pokemon.NormalisedPokemon>({
+export const pokemonAdapter = createEntityAdapter<Pokemon.TypedPokemon>({
   selectId: (item) => item.data.name,
   sortComparer: (a, b) => a.data.id - b.data.id,
 });
@@ -11,7 +11,7 @@ export const pokemonSelector = pokemonAdapter.getSelectors(
   (state: RootState) => state.resource.pokemon,
 );
 
-export const moveAdapter = createEntityAdapter<Pokemon.NormalisedMove>({
+export const moveAdapter = createEntityAdapter<Pokemon.TypedMove>({
   selectId: (item) => item.data.name,
   sortComparer: (a, b) => a.data.id - b.data.id,
 });

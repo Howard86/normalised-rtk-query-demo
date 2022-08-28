@@ -1,57 +1,35 @@
-import { Box, Heading, HStack, List, ListItem, Tag } from '@chakra-ui/react';
-import { skipToken } from '@reduxjs/toolkit/dist/query';
-import Head from 'next/head';
+import { Box, Heading } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 
 import { getLayout } from '@/common/components/Layout';
-import RouteLink from '@/common/components/RouteLink';
-import useAppSelector from '@/common/hooks/useAppSelector';
-import { useGetPokemonMoveByNameQuery } from '@/features/pokemon/api';
-import { moveSelector } from '@/features/pokemon/schema';
+import { SKIP_NAME } from '@/features/pokemon/constants';
+import MoveCard from '@/features/pokemon/MoveCard';
+import PokemonCardGrid from '@/features/pokemon/PokemonCardGrid';
+import useMove from '@/features/pokemon/useMove';
 
 const MovePage = () => {
   const router = useRouter();
-  const moveName =
-    typeof router.query.name === 'string' ? router.query.name : '';
-  const move = useAppSelector((state) =>
-    moveSelector.selectById(state, moveName),
-  );
+  const { name } = router.query;
+  const shouldSkip = typeof name !== 'string';
 
-  useGetPokemonMoveByNameQuery(moveName || skipToken);
+  const move = useMove(shouldSkip ? SKIP_NAME : name, shouldSkip);
 
-  if (!router.isReady || move?.type !== 'item') return null;
+  if (!router.isReady || !move.data) return null;
 
   return (
     <>
-      <Head>
-        <title>{move.data.name}</title>
-      </Head>
       <Box as="section">
-        <Heading mb="2">{move.data.name}</Heading>
-        <HStack>
-          <Tag>{move.data.type.name}</Tag>
-          <Tag variant="solid">{move.data.damage_class.name}</Tag>
-          <Tag variant="outline">Power: {move.data.power}</Tag>
-          <Tag variant="outline">PP: {move.data.pp}</Tag>
-          <Tag variant="outline">
-            {`Accuracy: ${move.data.accuracy ?? '-'}`}
-          </Tag>
-        </HStack>
+        <MoveCard name={move.data.data.name} />
       </Box>
-      <Box as="section">
-        <Heading as="h2" size="sm">
-          Pokemons
-        </Heading>
-        <List>
-          {move.data.learned_by_pokemon.map((pokemon) => (
-            <ListItem key={pokemon.name}>
-              <RouteLink href={`/pokemon/${pokemon.name}`}>
-                {pokemon.name}
-              </RouteLink>
-            </ListItem>
-          ))}
-        </List>
-      </Box>
+      {move.data.type === 'item' && (
+        <>
+          <Heading as="h2" size="sm">
+            Learned by following {move.data.data.learned_by_pokemon.length}{' '}
+            Pokemons
+          </Heading>
+          <PokemonCardGrid ids={move.data.data.learned_by_pokemon} />
+        </>
+      )}
     </>
   );
 };

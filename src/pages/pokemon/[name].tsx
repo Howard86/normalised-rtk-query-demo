@@ -1,12 +1,11 @@
-import { Heading, List, ListItem } from '@chakra-ui/react';
+import { Heading } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 
 import { getLayout } from '@/common/components/Layout';
-import RouteLink from '@/common/components/RouteLink';
+import { SKIP_NAME } from '@/features/pokemon/constants';
+import MoveCardGrid from '@/features/pokemon/MoveCardGrid';
 import PokemonCard from '@/features/pokemon/PokemonCard';
 import usePokemon from '@/features/pokemon/usePokemon';
-
-const SKIP_NAME = '_SKIP_NAME';
 
 const PokemonPage = () => {
   const router = useRouter();
@@ -15,7 +14,7 @@ const PokemonPage = () => {
 
   const pokemon = usePokemon(shouldSkip ? SKIP_NAME : name, shouldSkip);
 
-  if (!router.isReady || pokemon.data?.type !== 'item') return null;
+  if (!router.isReady || !pokemon.data) return null;
 
   return (
     <>
@@ -23,15 +22,9 @@ const PokemonPage = () => {
       <Heading as="h2" size="sm">
         Moves
       </Heading>
-      <List h="max-content" flex={1} overflowY="auto">
-        {pokemon.data.data.moves.map((move) => (
-          <ListItem key={move.move.name}>
-            <RouteLink href={`/move/${move.move.name}`}>
-              {move.move.name}
-            </RouteLink>
-          </ListItem>
-        ))}
-      </List>
+      {pokemon.data.type === 'item' && (
+        <MoveCardGrid ids={pokemon.data.data.moves} />
+      )}
     </>
   );
 };

@@ -2,11 +2,15 @@ import { createSlice, EntityState } from '@reduxjs/toolkit';
 
 import { pokemonApi } from '@/features/pokemon/api';
 import { moveAdapter, pokemonAdapter } from '@/features/pokemon/schema';
-import { mapResourceToNormalisedList } from '@/features/pokemon/util';
+import {
+  mapResourceToNormalisedList,
+  mapToNormalizedMove,
+  mapToNormalizedPokemon,
+} from '@/features/pokemon/util';
 
 interface ResourceState {
-  pokemon: EntityState<Pokemon.NormalisedPokemon>;
-  move: EntityState<Pokemon.NormalisedMove>;
+  pokemon: EntityState<Pokemon.TypedPokemon>;
+  move: EntityState<Pokemon.TypedMove>;
 }
 
 const initialState: ResourceState = {
@@ -27,7 +31,7 @@ export const resourceSlice = createSlice({
           state.pokemon = pokemonAdapter.addMany(
             state.pokemon,
             action.payload.results.map(
-              mapResourceToNormalisedList<Pokemon.Pokemon>,
+              mapResourceToNormalisedList<Pokemon.NormalizedPokemon>,
             ),
           );
         },
@@ -37,7 +41,7 @@ export const resourceSlice = createSlice({
         (state, action) => {
           state.pokemon = pokemonAdapter.upsertOne(state.pokemon, {
             type: 'item',
-            data: action.payload,
+            data: mapToNormalizedPokemon(action.payload),
           });
           state.move = moveAdapter.addMany(
             state.move,
@@ -53,7 +57,7 @@ export const resourceSlice = createSlice({
           state.move = moveAdapter.addMany(
             state.move,
             action.payload.results.map(
-              mapResourceToNormalisedList<Pokemon.Move>,
+              mapResourceToNormalisedList<Pokemon.NormalizedMove>,
             ),
           );
         },
@@ -63,12 +67,12 @@ export const resourceSlice = createSlice({
         (state, action) => {
           state.move = moveAdapter.upsertOne(state.move, {
             type: 'item',
-            data: action.payload,
+            data: mapToNormalizedMove(action.payload),
           });
           state.pokemon = pokemonAdapter.addMany(
             state.pokemon,
             action.payload.learned_by_pokemon.map(
-              mapResourceToNormalisedList<Pokemon.Pokemon>,
+              mapResourceToNormalisedList<Pokemon.NormalizedPokemon>,
             ),
           );
         },

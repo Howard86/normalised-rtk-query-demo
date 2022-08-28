@@ -19,10 +19,9 @@ import {
   useGetPokemonSpeciesByNameQuery,
   useLazyGetPokemonByNameQuery,
 } from './api';
+import { LANGUAGE_NAME } from './constants';
 import usePokemon from './usePokemon';
 import { getColorByType } from './util';
-
-const LANGUAGE_NAME = 'en';
 
 const PokemonCard = ({ name }: Pokemon.NameIndex) => {
   const [fetchPokemonByName, { isLoading }] = useLazyGetPokemonByNameQuery();
@@ -50,7 +49,6 @@ const PokemonCard = ({ name }: Pokemon.NameIndex) => {
       shadow="lg"
       rounded="lg"
       textTransform="capitalize"
-      minH={120}
       gap={4}
     >
       <Tag
@@ -99,8 +97,8 @@ const PokemonCard = ({ name }: Pokemon.NameIndex) => {
         </chakra.h2>
         {pokemon.data.type === 'list' ? (
           <Button
-            mt="auto"
-            alignSelf="center"
+            my="auto"
+            mx="auto"
             size="xs"
             isLoading={isLoading}
             onClick={(event) => {
@@ -127,18 +125,17 @@ const PokemonCard = ({ name }: Pokemon.NameIndex) => {
               ))}
             </HStack>
             <Skeleton isLoaded={Boolean(species.data)}>
-              <chakra.p lineHeight="4" fontSize="sm" mt="auto">
+              <chakra.p lineHeight="4" fontSize="sm">
                 {species.description}
               </chakra.p>
             </Skeleton>
-            <chakra.p fontWeight="bold" fontSize="sm">
+            <chakra.p fontWeight="bold" fontSize="sm" mt="auto">
               {pokemon.data.data.moves.length} moves
             </chakra.p>
           </>
         )}
       </Flex>
     </LinkBox>
-    // </LinkBox>
   );
 };
 

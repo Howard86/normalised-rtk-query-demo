@@ -8,13 +8,27 @@ export const getResourceId = (item: Pokemon.NamedAPIResource) => {
 
 export const mapResourceToNormalisedList = <K extends Pokemon.Index>(
   item: Pokemon.NamedAPIResource,
-): Pokemon.Normalised<K> => ({
+): Pokemon.Typed<K> => ({
   type: 'list',
   data: {
     id: getResourceId(item),
     name: item.name,
     url: item.url,
   },
+});
+
+export const mapToNormalizedPokemon = (
+  pokemon: Pokemon.Pokemon,
+): Pokemon.NormalizedPokemon => ({
+  ...pokemon,
+  moves: pokemon.moves.map((move) => move.move.name),
+});
+
+export const mapToNormalizedMove = (
+  move: Pokemon.Move,
+): Pokemon.NormalizedMove => ({
+  ...move,
+  learned_by_pokemon: move.learned_by_pokemon.map((pokemon) => pokemon.name),
 });
 
 // Reference: https://bulbapedia.bulbagarden.net/wiki/Type

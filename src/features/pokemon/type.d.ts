@@ -11,15 +11,19 @@ declare namespace Pokemon {
     offset: number;
   };
 
-  type NormalisedPokemon = Normalised<Pokemon>;
-  type NormalisedMove = Normalised<Move>;
+  type TypedPokemon = Typed<NormalizedPokemon>;
+  type TypedMove = Typed<NormalizedMove>;
 
-  type Normalised<T extends Index> =
+  type Typed<T extends Index> =
     | { type: 'list'; data: NamedAPIResource & Index }
     | { type: 'item'; data: T };
 
   type Index = { id: number };
   type NameIndex = { name: string };
+
+  interface NormalizedPokemon extends Omit<Pokemon, 'moves'> {
+    moves: string[];
+  }
 
   interface Pokemon {
     abilities: PokemonAbility[];
@@ -324,6 +328,10 @@ declare namespace Pokemon {
   interface PokemonType {
     slot: number;
     type: NamedAPIResource;
+  }
+
+  interface NormalizedMove extends Omit<Move, 'learned_by_pokemon'> {
+    learned_by_pokemon: string[];
   }
 
   interface Move {
