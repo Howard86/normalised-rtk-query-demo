@@ -1,6 +1,6 @@
 import { createEntityAdapter } from '@reduxjs/toolkit';
 
-import { RootState } from '@/app/redux/store';
+import type { RootState } from '@/app/redux/store';
 
 export const pokemonAdapter = createEntityAdapter<Pokemon.NormalisedPokemon>({
   selectId: (item) => item.data.name,

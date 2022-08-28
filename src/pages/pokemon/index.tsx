@@ -1,10 +1,9 @@
-import { List, ListItem } from '@chakra-ui/react';
-import Image from 'next/image';
+import { SimpleGrid } from '@chakra-ui/react';
 
 import { getLayout } from '@/common/components/Layout';
-import RouteLink from '@/common/components/RouteLink';
 import useAppSelector from '@/common/hooks/useAppSelector';
 import { useGetListOfPokemonQuery } from '@/features/pokemon/api';
+import PokemonCard from '@/features/pokemon/PokemonCard';
 import { pokemonSelector } from '@/features/pokemon/schema';
 
 const PokemonListPage = (): JSX.Element => {
@@ -14,28 +13,17 @@ const PokemonListPage = (): JSX.Element => {
   useGetListOfPokemonQuery({ offset: 0, limit: 20 });
 
   return (
-    <List>
+    <SimpleGrid
+      columns={[2, 2, 3]}
+      bgColor="gray.100"
+      spacing={8}
+      p={4}
+      flex={1}
+    >
       {pokemonList.map((pokemon) => (
-        <ListItem key={pokemon.data.name}>
-          {pokemon.type === 'list' ? (
-            <RouteLink href={`/pokemon/${pokemon.data.name}`}>
-              {pokemon.data.name}
-            </RouteLink>
-          ) : (
-            <>
-              <Image
-                src={pokemon.data.sprites.front_default}
-                width={100}
-                height={100}
-              />
-              <RouteLink href={`/pokemon/${pokemon.data.name}`}>
-                {pokemon.data.name}
-              </RouteLink>
-            </>
-          )}
-        </ListItem>
+        <PokemonCard key={pokemon.data.id} name={pokemon.data.name} />
       ))}
-    </List>
+    </SimpleGrid>
   );
 };
 

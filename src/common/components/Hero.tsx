@@ -11,7 +11,7 @@ import {
 import RouteLink from './RouteLink';
 
 const Hero = (props: BoxProps) => (
-  <Box px={8} py={24} mx="auto" {...props}>
+  <Box px={8} py={12} mx="auto" {...props}>
     <Box
       w={{
         base: 'full',

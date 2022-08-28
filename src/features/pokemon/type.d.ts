@@ -19,6 +19,7 @@ declare namespace Pokemon {
     | { type: 'item'; data: T };
 
   type Index = { id: number };
+  type NameIndex = { name: string };
 
   interface Pokemon {
     abilities: PokemonAbility[];

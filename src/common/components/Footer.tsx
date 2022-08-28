@@ -4,13 +4,14 @@ const Footer = () => (
   <Flex
     w="full"
     bg="gray.100"
-    p={50}
+    p={4}
     alignItems="center"
     justifyContent="center"
   >
     <Flex
       w="full"
       as="footer"
+      rounded="2xl"
       flexDir={{
         base: 'column',
         sm: 'row',

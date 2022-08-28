@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/react';
+import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { BiChevronRight } from 'react-icons/bi';
@@ -11,6 +12,9 @@ const HOME_ITEM: LinkItem = {
   text: 'Home',
   href: '/',
 };
+
+const capitalize = (text: string) => text[0].toUpperCase() + text.slice(1);
+const last = <T,>(array: T[]) => array[array.length - 1];
 
 const DynamicBreadcrumb = () => {
   const router = useRouter();
@@ -46,29 +50,34 @@ const DynamicBreadcrumb = () => {
   }, [router.asPath]);
 
   return (
-    <Breadcrumb
-      p={2}
-      spacing={2}
-      separator={<BiChevronRight color="gray.500" />}
-    >
-      {linkItems.map((item, index) => {
-        const isCurrentPage = linkItems.length - 1 === index;
+    <>
+      <Head>
+        <title>Pokedex | {capitalize(last(linkItems).text)}</title>
+      </Head>
+      <Breadcrumb
+        p={2}
+        spacing={2}
+        separator={<BiChevronRight color="gray.500" />}
+      >
+        {linkItems.map((item, index) => {
+          const isCurrentPage = linkItems.length - 1 === index;
 
-        return (
-          <BreadcrumbItem key={item.href}>
-            <Link href={item.href} passHref>
-              <BreadcrumbLink
-                isCurrentPage={isCurrentPage}
-                fontWeight={isCurrentPage ? 'medium' : 'normal'}
-                textTransform="capitalize"
-              >
-                {item.text}
-              </BreadcrumbLink>
-            </Link>
-          </BreadcrumbItem>
-        );
-      })}
-    </Breadcrumb>
+          return (
+            <BreadcrumbItem key={item.href}>
+              <Link href={item.href} passHref>
+                <BreadcrumbLink
+                  isCurrentPage={isCurrentPage}
+                  fontWeight={isCurrentPage ? 'medium' : 'normal'}
+                  textTransform="capitalize"
+                >
+                  {item.text}
+                </BreadcrumbLink>
+              </Link>
+            </BreadcrumbItem>
+          );
+        })}
+      </Breadcrumb>
+    </>
   );
 };
 
