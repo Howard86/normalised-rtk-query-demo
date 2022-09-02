@@ -8,13 +8,17 @@ import reducer from './reducer';
 
 import { isDev } from '@/common/config';
 import localApi from '@/common/services/local';
+import { pokemonApi } from '@/features/pokemon/api';
 
 export const configureAppStore = (preloadedState?: TypedObject) => {
   const store = configureStore({
     reducer,
     devTools: isDev,
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(localApi.middleware),
+      getDefaultMiddleware().concat([
+        localApi.middleware,
+        pokemonApi.middleware,
+      ]),
     preloadedState,
   });
 
