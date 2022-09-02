@@ -1,50 +1,15 @@
-# [1.7.0](https://github.com/Howard86/nextjs-template/compare/v1.6.0...v1.7.0) (2022-06-04)
-
-
-### Bug Fixes
-
-* reduce bundle size by removing custom config ([13c7c2b](https://github.com/Howard86/nextjs-template/commit/13c7c2bb0dcca0d350640898cba2513edc96fc8c))
+# 1.8.0 (2022-09-02)
 
 
 ### Features
 
-* **name:** add name feature folder to separate logic ([49ffece](https://github.com/Howard86/nextjs-template/commit/49ffeceeb26ca1d064d5707b98c1a8f997ccfceb))
-
-
-
-# [1.6.0](https://github.com/Howard86/nextjs-template/compare/v1.5.1...v1.6.0) (2022-06-04)
-
-
-### Features
-
-* set up msw on server & browser ([58a8696](https://github.com/Howard86/nextjs-template/commit/58a8696f947f69c4feac8ce6c7a3e5ce8dfde79c))
-
-
-
-## [1.5.1](https://github.com/Howard86/nextjs-template/compare/v1.5.0...v1.5.1) (2022-05-29)
-
-
-### Bug Fixes
-
-* update jest config ([9dc7638](https://github.com/Howard86/nextjs-template/commit/9dc7638f60698b45167c51063b5d77506b7616e6))
-
-
-
-# [1.5.0](https://github.com/Howard86/nextjs-template/compare/v1.4.1...v1.5.0) (2022-05-06)
-
-
-### Features
-
-* set up eslint config for testing ([88a7804](https://github.com/Howard86/nextjs-template/commit/88a7804e328cc0adecaff9cff0a6ba8013bf22ad))
-
-
-
-## [1.4.1](https://github.com/Howard86/nextjs-template/compare/v1.4.0...v1.4.1) (2022-02-20)
-
-
-### Bug Fixes
-
-* update ci syntax ([54dc2f4](https://github.com/Howard86/nextjs-template/commit/54dc2f406c6255ef8844cb36b2d0788b13f68eb1))
+* add Layout with DyanmicBreadcrumb ([2e1542d](https://github.com/Howard86/nextjs-template/commit/2e1542df14e1dd1bd5f69c32f7915a2c22e590be))
+* add MoveList page ([ba8006e](https://github.com/Howard86/nextjs-template/commit/ba8006eabc9581ee291c4455bbe2c29f0292804a))
+* add pokemon list ([0774fa7](https://github.com/Howard86/nextjs-template/commit/0774fa7aae971115c5324627d08041f4170326d4))
+* add pokemon move page ([82504d5](https://github.com/Howard86/nextjs-template/commit/82504d5bdd44ce409217e2c99cc009f1f5ef76aa))
+* add resource slice to replace rtk query ([14cb480](https://github.com/Howard86/nextjs-template/commit/14cb480396da3cd14fa039a4f0d02454b991fb45))
+* add single pokemon page with breadcrumb ([0771e2f](https://github.com/Howard86/nextjs-template/commit/0771e2f6217e14d23a1de1b7787e8f3def70581e))
+* **species:** add getPokemonSpiecies for description ([247b8d0](https://github.com/Howard86/nextjs-template/commit/247b8d042cdd89fc962aeba17355f82159b0c5bc))
 
 
 
